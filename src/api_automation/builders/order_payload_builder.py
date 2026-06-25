@@ -1,10 +1,10 @@
-from typing import Any
+from typing import Any, Dict, List
 
 
 class MutualFundOrderPayloadBuilder:
     def __init__(self):
         self._user_id = 1
-        self._products: list[dict[str, Any]] = [
+        self._products: List[Dict[str, Any]] = [
             {
                 "id": 1,
                 "quantity": 1,
@@ -24,7 +24,7 @@ class MutualFundOrderPayloadBuilder:
         self._products = []
         return self
 
-    def build(self) -> dict[str, Any]:
+    def build(self) -> Dict[str, Any]:
         return {
             "userId": self._user_id,
             "products": self._products,

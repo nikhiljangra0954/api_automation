@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import json
 import os
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict
 
 
 SUPPORTED_ENVS = {"sit", "uat", "prod"}
@@ -19,9 +19,12 @@ class Settings:
 
 def load_settings(env: str) -> Settings:
     normalized_env = env.lower()
+
     if normalized_env not in SUPPORTED_ENVS:
         supported = ", ".join(sorted(SUPPORTED_ENVS))
-        raise ValueError(f"Unsupported env '{env}'. Supported values: {supported}")
+        raise ValueError(
+            f"Unsupported env '{env}'. Supported values: {supported}"
+        )
 
     raw_settings = _load_env_file(normalized_env)
 
@@ -29,15 +32,25 @@ def load_settings(env: str) -> Settings:
         env=normalized_env,
         base_url=_env_or_default("API_BASE_URL", raw_settings["base_url"]),
         timeout_seconds=int(
-            _env_or_default("API_TIMEOUT_SECONDS", raw_settings["timeout_seconds"])
+            _env_or_default(
+                "API_TIMEOUT_SECONDS",
+                raw_settings["timeout_seconds"]
+            )
         ),
-        username=_env_or_default("API_USERNAME", raw_settings["username"]),
-        password=_env_or_default("API_PASSWORD", raw_settings["password"]),
+        username=_env_or_default(
+            "API_USERNAME",
+            raw_settings["username"]
+        ),
+        password=_env_or_default(
+            "API_PASSWORD",
+            raw_settings["password"]
+        ),
     )
 
 
-def _load_env_file(env: str) -> dict[str, Any]:
+def _load_env_file(env: str) -> Dict[str, Any]:
     config_path = Path(__file__).parent / "environments" / f"{env}.json"
+
     with config_path.open(encoding="utf-8") as config_file:
         return json.load(config_file)
 

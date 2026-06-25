@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict, Optional
 
 import requests
 
@@ -17,40 +17,48 @@ class BaseClient:
         self,
         path: str,
         *,
-        headers: dict[str, str] | None = None,
-        params: dict[str, Any] | None = None,
+        headers: Optional[Dict[str, str]] = None,
+        params: Optional[Dict[str, Any]] = None,
     ) -> requests.Response:
         url = self._url(path)
+
         log_request(self.logger, "GET", url, headers=headers)
         attach_request("GET", url, headers=headers)
+
         response = self.session.get(
             url,
             headers=headers,
             params=params,
             timeout=self.settings.timeout_seconds,
         )
+
         log_response(self.logger, response)
         attach_response(response)
+
         return response
 
     def post(
         self,
         path: str,
         *,
-        json: dict[str, Any] | None = None,
-        headers: dict[str, str] | None = None,
+        json: Optional[Dict[str, Any]] = None,
+        headers: Optional[Dict[str, str]] = None,
     ) -> requests.Response:
         url = self._url(path)
+
         log_request(self.logger, "POST", url, headers=headers, body=json)
         attach_request("POST", url, headers=headers, body=json)
+
         response = self.session.post(
             url,
             json=json,
             headers=headers,
             timeout=self.settings.timeout_seconds,
         )
+
         log_response(self.logger, response)
         attach_response(response)
+
         return response
 
     def _url(self, path: str) -> str:

@@ -1,7 +1,6 @@
 import json
 import logging
-from typing import Any
-from typing import Optional
+from typing import Any, Dict, Optional
 
 import requests
 
@@ -47,8 +46,8 @@ def log_request(
     method: str,
     url: str,
     *,
-    headers: Optional[dict[str, str]] = None,
-    body: dict[str, Any] | None = None,
+    headers: Optional[Dict[str, str]] = None,
+    body: Optional[Dict[str, Any]] = None,
 ) -> None:
     logger.info(
         "API Request | method=%s url=%s headers=%s body=%s",

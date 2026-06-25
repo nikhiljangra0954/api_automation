@@ -1,0 +1,6 @@
+2026-06-25 22:10:59,868 | INFO | AuthClient | API Request | method=POST url=https://dummyjson.com/auth/login headers={} body={"username": "emilys", "password": "***MASKED***", "expiresInMins": 30}
+2026-06-25 22:11:00,841 | INFO | AuthClient | API Response | status_code=400 elapsed_ms=968.44 url=https://dummyjson.com/auth/login body={"message": "Invalid credentials"}
+2026-06-25 22:11:00,858 | INFO | AuthClient | API Request | method=POST url=https://dummyjson.com/auth/login headers={} body={"username": "emilys", "password": "***MASKED***", "expiresInMins": 30}
+2026-06-25 22:11:01,315 | INFO | AuthClient | API Response | status_code=200 elapsed_ms=455.74 url=https://dummyjson.com/auth/login body={"accessToken": "***MASKED***", "refreshToken": "***MASKED***", "id": 1, "username": "emilys", "email": "emily.johnson@x.dummyjson.com", "firstName": "Emily", "lastName": "Johnson", "gender": "female", "image": "https://dummyjson.com/icon/emilys/128"}
+2026-06-25 22:11:01,316 | INFO | OrderClient | API Request | method=POST url=https://dummyjson.com/carts/add headers={"Authorization": "***MASKED***"} body={"userId": 1, "products": []}
+2026-06-25 22:11:01,763 | INFO | OrderClient | API Response | status_code=400 elapsed_ms=445.33 url=https://dummyjson.com/carts/add body={"message": "products can not be empty"}

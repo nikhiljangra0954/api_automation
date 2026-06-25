@@ -1,0 +1,1 @@
+2026-06-25 22:26:16,083 | WARNING | allure-report | Allure command-line tool was not found on PATH. Allure result files were generated, but the HTML report could not be built. Install it with `pip install allure-commandline` or your system package manager.

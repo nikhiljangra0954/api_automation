@@ -1,0 +1,7 @@
+2026-06-25 22:28:59,413 | INFO | AuthClient | API Request | method=POST url=https://dummyjson.com/auth/login headers={} body={"username": "emilys", "password": "***MASKED***", "expiresInMins": 30}
+2026-06-25 22:29:00,894 | INFO | AuthClient | API Response | status_code=400 elapsed_ms=1476.68 url=https://dummyjson.com/auth/login body={"message": "Invalid credentials"}
+2026-06-25 22:29:00,910 | INFO | AuthClient | API Request | method=POST url=https://dummyjson.com/auth/login headers={} body={"username": "emilys", "password": "***MASKED***", "expiresInMins": 30}
+2026-06-25 22:29:01,527 | INFO | AuthClient | API Response | status_code=200 elapsed_ms=616.4 url=https://dummyjson.com/auth/login body={"accessToken": "***MASKED***", "refreshToken": "***MASKED***", "id": 1, "username": "emilys", "email": "emily.johnson@x.dummyjson.com", "firstName": "Emily", "lastName": "Johnson", "gender": "female", "image": "https://dummyjson.com/icon/emilys/128"}
+2026-06-25 22:29:01,528 | INFO | OrderClient | API Request | method=POST url=https://dummyjson.com/carts/add headers={"Authorization": "***MASKED***"} body={"userId": 1, "products": []}
+2026-06-25 22:29:02,062 | INFO | OrderClient | API Response | status_code=400 elapsed_ms=532.06 url=https://dummyjson.com/carts/add body={"message": "products can not be empty"}
+2026-06-25 22:29:02,080 | WARNING | allure-report | Allure command-line tool was not found on PATH. Allure result files were generated, but the HTML report could not be built. Install it with `brew install allure` or your system package manager.

@@ -1,0 +1,111 @@
+name: API Automation
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        required: true
+        default: uat
+        type: choice
+        options:
+          - sit
+          - uat
+          - prod
+      marker:
+        description: Optional pytest marker expression, for example e2e or api_validation
+        required: false
+        default: ""
+        type: string
+
+jobs:
+  api-tests:
+    name: Run API tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      TARGET_ENV: ${{ github.event.inputs.environment || 'sit' }}
+      PYTEST_MARKER: ${{ github.event.inputs.marker || '' }}
+      API_BASE_URL: ${{ secrets.API_BASE_URL }}
+      API_USERNAME: ${{ secrets.API_USERNAME }}
+      API_PASSWORD: ${{ secrets.API_PASSWORD }}
+      API_TIMEOUT_SECONDS: ${{ secrets.API_TIMEOUT_SECONDS }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Install Allure CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y default-jre
+          curl -L -o allure.tgz https://github.com/allure-framework/allure2/releases/download/2.29.0/allure-2.29.0.tgz
+          sudo tar -zxf allure.tgz -C /opt/
+          sudo ln -sf /opt/allure-2.29.0/bin/allure /usr/local/bin/allure
+          allure --version
+
+      - name: Run pytest
+        run: |
+          if [ -n "$PYTEST_MARKER" ]; then
+            python -m pytest --env="$TARGET_ENV" -m "$PYTEST_MARKER"
+          else
+            python -m pytest --env="$TARGET_ENV"
+          fi
+
+      - name: Upload pytest HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-html-report-${{ env.TARGET_ENV }}
+          path: reports/api_automation_report.html
+          if-no-files-found: warn
+
+      - name: Upload JUnit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-report-${{ env.TARGET_ENV }}
+          path: reports/junit.xml
+          if-no-files-found: warn
+
+      - name: Upload execution logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: execution-logs-${{ env.TARGET_ENV }}
+          path: reports/logs/
+          if-no-files-found: warn
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ env.TARGET_ENV }}
+          path: reports/allure-results/
+          if-no-files-found: warn
+
+      - name: Upload Allure HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-html-report-${{ env.TARGET_ENV }}
+          path: reports/allure-report/
+          if-no-files-found: warn

@@ -55,35 +55,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        always {
-            junit allowEmptyResults: true, testResults: 'reports/junit.xml'
-
-            archiveArtifacts(
-                allowEmptyArchive: true,
-                artifacts: '''
-                    reports/api_automation_report.html,
-                    reports/junit.xml,
-                    reports/logs/**,
-                    reports/allure-results/**,
-                    reports/allure-report/**
-                '''
-            )
-
-            script {
-                try {
-                    allure([
-                        includeProperties: false,
-                        jdk: '',
-                        reportBuildPolicy: 'ALWAYS',
-                        results: [[path: 'reports/allure-results']]
-                    ])
-                } catch (err) {
-                    echo "Allure Jenkins plugin is not installed/configured. Archived reports are still available."
-                    echo "${err}"
-                }
-            }
-        }
-    }
 }

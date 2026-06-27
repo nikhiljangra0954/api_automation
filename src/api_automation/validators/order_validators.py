@@ -20,6 +20,6 @@ def validate_selected_mutual_fund_present(response: requests.Response) -> None:
 
 
 def validate_order_rejected_with_validation_error(response: requests.Response) -> None:
-    assert response.status_code in [400, 422], (
+    assert response.status_code in [403, 422], (
         f"Expected validation error, got HTTP {response.status_code}. Body: {response.text}"
     )
